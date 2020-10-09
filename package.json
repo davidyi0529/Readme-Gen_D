@@ -1,0 +1,24 @@
+{
+  "name": "readme-gen_d",
+  "version": "1.0.0",
+  "description": "Generate a readme.md from user input",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/davidyi0529/Readme-Gen_D.git"
+  },
+  "author": "David Yi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/davidyi0529/Readme-Gen_D/issues"
+  },
+  "homepage": "https://github.com/davidyi0529/Readme-Gen_D#readme",
+  "dependencies": {
+    "fs": "0.0.1-security",
+    "inquirer": "^7.3.3",
+    "util": "^0.12.3"
+  }
+}
