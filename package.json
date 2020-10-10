@@ -1,7 +1,6 @@
 {
   "name": "readme-gen_d",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -16,8 +15,12 @@
     "url": "https://github.com/davidyi0529/Readme-Gen_D/issues"
   },
   "homepage": "https://github.com/davidyi0529/Readme-Gen_D#readme",
+  "description": "",
   "dependencies": {
+    "api-js": "0.0.0",
     "axios": "^0.20.0",
-    "inquirer": "^7.3.3"
+    "fs": "0.0.1-security",
+    "inquirer": "^7.3.3",
+    "utils": "^0.3.1"
   }
 }
