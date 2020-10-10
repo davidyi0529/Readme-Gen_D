@@ -1,298 +1,151 @@
-let fs = require("fs");
-let inquirer = require("inquirer");
+// External packages
+const fs = require("fs");
+const inquirer = require("inquirer");
 const util = require("util");
 
-const writeFileAsync = util.promisify(fs.writeFile);
+// Internal modules
+const api = require('./utils/api.js');
+const generateMarkdown = require('./utils/generateMarkdown.js');
 
-/*
-Project Title 
-Badges 
-Link to application 
-Description 
-Screenshots
-Table of Contents 
-Installation O
-Featured Technology *
-Usage O
-Contributing O
-Tests O
-license O
-Contact O
-    Author
-    User GitHub URL
-    User LinkedIn URL
-    User email 
-*/
-
-//Inquirer prompt with a series of questions the user will answer for their readme layout.
-function promptUser(){
-    return inquirer.prompt([
-            { //Title
-                type: "input",
-                message: "What is the title of your project?",
-                name: "title"
-            },
-            { //Badge
-                type: "input",
-                message: "Input your badge URL here. (For more info, go to https://shields.io/)",
-                name: "badge"
-            },
-            { //Link to working application
-                type: "input",
-                message: "What is your working application URL?",
-                name: "application"
-            },
-            { //Description
-                type: "input",
-                message: "Write a short description of your project.",
-                name: "description"
-            },
-            { //Screenshot
-                type: "input",
-                message: "Enter a screenshot or video URL.",
-                name: "screenshot"
-            },
-            // {
-            //     type: "checkbox",
-            //     message: "Enter your table of contents.",
-            //     name: "tableContents",
-            //     choices: ["[Installation](#installation)",
-            //      "[Features](#features)", 
-            //      "[Usage](#usage)",
-            //      "[Contributing](#contributing)",
-            //      "[Tests](#tests)",
-            //      "[License](#license)", 
-            //      "[Questions](#questions)"]
-            // },
-            { //Installation
-              type: "input",
-              message: "Enter your installation instructions",
-              name: "install" 
-            },
-            { //Featured Technology
-                type: "checkbox",
-                message: "What type of technologies were used for this project?",
-                name: "technologies",
-                choices: ["[HTML](#html)",
-                 "[CSS](#css)", 
-                 "[Javascript](#javascript)",
-                 "[Ruby on Rails](#rubyonrails)",
-                 "[Node.js](#nodejs)",
-                 "[Bootstrap](#bootstrap)", 
-                 "[React.js](#reactjs)"]
-            },
-            { //Usage
-              type: "input",
-              message: "How do you use your project?",
-              name: "usage"  
-            },
-            { //Contributing
-                type: "input",
-                message: "Contributing guidelines",
-                name: "contribute" 
-            },
-            { //Tests
-                type: "input",
-                message: "Tests",
-                name: "test"
-            },
-            { //Licenses
-                type: "checkbox",
-                message: "Choose a license.",
-                name: "licensing",
-                choices: ["[MIT](https://choosealicense.com/licenses/mit/)",
-                "[ISC](https://www.isc.org/licenses/)", 
-                "[GNU GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html)",
-                "[Apache-2.0](https://www.apache.org/licenses/LICENSE-2.0)"]
-            },
-            { //Authors
-                type: "input",
-                message: "Who is the author of this project",
-                name: "authors" 
-              },
-            //Contact Info
-
-            { //GitHub
-                type: "input",
-                message: "What is your GitHub URL?",
-                name: "gitHubUrl"
-            },
-            { //LinkedIn
-                type: "input",
-                message: "What is your LinkedIn URL?",
-                name: "linkedinUrl"
-            },
-            { //Email
-                type: "input",
-                message: "What is your Email?",
-                name: "email"
+//Inquirer prompts for userResponses
+const questions = [
+    { //GitHub username
+        type: 'input',
+        message: "What is your GitHub username? (No @ needed)",
+        name: 'username',
+        default: 'davidyi',
+        validate: function (answer) {
+            if (answer.length < 1) {
+                return console.log("A valid GitHub username is required.");
             }
-        ]
-    );
+                return true;
+        }
+    },
+    { //GitHub repo
+        type: 'input',
+        message: "What is the name of your GitHub repo?",
+        name: 'repo',
+        default: 'readme-generator',
+        validate: function (answer) {
+            if (answer.length < 1) {
+                return console.log("A valid GitHub repo is required for a badge.");
+            }
+            return true;
+        }
+    },
+    { //Email
+        type: "input",
+        message: "What is your Email address?",
+        name: "email"
+    },
+    { //LinkedIn
+        type: "input",
+        message: "What is your LinkedIn URL?",
+        name: "linkedinUrl"
+    },
+    { //Project Title
+        type: 'input',
+        message: "What is the title of your project?",
+        name: 'title',
+        default: 'Project Title',
+        validate: function (answer) {
+            if (answer.length < 1) {
+                return console.log("A valid project title is required.");
+            }
+            return true;
+        }
+    },
+    { //Description
+        type: 'input',
+        message: "Write a description of your project.",
+        name: 'description',
+        default: 'Project Description',
+        validate: function (answer) {
+            if (answer.length < 1) {
+                return console.log("A valid project description is required.");
+            }
+            return true;
+        }
+    },
+    { //Link to working application
+        type: "input",
+        message: "What is your working application URL?",
+        name: "application"
+    },
+    { //Screenshot
+        type: "input",
+        message: "Enter a screenshot or video URL.",
+        name: "screenshot"
+        },
+    { //Installation
+        type: 'input',
+        message: "If applicable, describe the steps required to install your project for the Installation section.",
+        name: 'installation'
+    },
+    { //Usage
+        type: 'input',
+        message: "Provide instructions and examples of your project in use for the Usage section.",
+        name: 'usage'
+    },
+    { //Contributing
+        type: 'input',
+        message: "If applicable, provide guidelines on how other developers can contribute to your project.",
+        name: 'contributing'
+    },
+    { //Test
+        type: 'input',
+        message: "If applicable, provide any tests written for your application and provide examples on how to run them.",
+        name: 'tests'
+    },
+    { //License
+        type: 'list',
+        message: "Choose a license for your project.",
+        choices: ['GNU GPLv3', 'Apache License 2.0', 'MIT License', 'ISC License'],
+        name: 'license'
+    },
+    { //Authors
+        type: "input",
+        message: "Who is the author of this project",
+        name: "authors" 
+    },           
+];
+
+function writeToFile(fileName, data) {
+    fs.writeFile(fileName, data, err => {
+        if (err) {
+            return console.log(err);
+        }
+          
+        console.log("Success! Your README.md file has been generated")
+    });
 }
 
-//README Template
-inqPromise = promptUser();
-inqPromise.then(function(userInput) {
-    let md = `<br />
+const writeFileAsync = util.promisify(writeToFile);
 
-# ${userInput.title}
+// Main function
+async function init() {
+    try {
+
+        // Prompt Inquirer questions
+        const userResponses = await inquirer.prompt(questions);
+        console.log("Your responses: ", userResponses);
+        console.log("Thank you for your responses! Fetching your GitHub data next...");
     
-<br />
-
-!${userInput.badge}
-
-
-### Link to Deployed Application
-- ${userInput.application}
-
-<br />
-
-${userInput.description}
-
-<br />
-
-### Screenshot/Video of your App:
-
-<img src="${userInput.screenshot}" width="1275" height="600">
-
-<br />
-<br />
-
----
-
-<br />
-<br />
-
-## Table of Contents
-
-- [Installation](#installation)
-- [Featured Technology](#features)
-- [Usage](#usage)
-- [Contributing](#contributing)
-- [Tests](#tests)
-- [License](#license)
-- [Contact](#Contact)
-
-<br />
-<br />
-
----
-
-<br />
-<br />
-
-## Installation
-
-<br />
-
-> ${userInput.install}
-
-
-<br />
-<br />
-
----
-
-<br />
-<br />
-
-## Featured Technology
-
-<br />
-<br />
-
-The following were used for this project.
-
-- ${userInput.technologies}
-
-
-<br />
-<br />
-
----
-
-<br />
-<br />
-
-## Usage
-
-- ${userInput.usage}
-
-
-<br />
-<br />
-
----
-
-<br />
-<br />
-
-## Contributing
-
-- ${userInput.contribute}
-
-
-<br />
-<br />
-
----
-
-<br />
-<br />
-
-## Tests
-
-- ${userInput.test}
-
-
-<br />
-<br />
-
----
-
-<br />
-<br />
-
-## License
-
-- ${userInput.licensing}
-
-
-<br />
-<br />
-
----
-
-<br />
-<br />
-
-## Contact
-
-<br />
-
-> <a href="${userInput.gitHubUrl}" target="_blank">GitHub</a> 
-
-> <a href="${userInput.linkedinUrl}" target="_blank">LinkedIn</a> 
-
-> <a href="${userInput.email}" target="_blank">Email</a> 
-
-<br />
-
-This project is ${userInput.licensing} licensed.
-
-Copyright &copy; 2020 ${userInput.authors} All rights reserved.`;
-
-//Generate the README file
-   let writePromise = writeFileAsync("profile.md", md);
-   writePromise.then(function() {
-       console.log("Successfully wrote out to profile.md");
-  //function to display error to console
-    }).catch(function(err) {
-        console.log("Problem with writing file profile.md");
-        console.log(err);
-   }).catch(function(err) {
-        console.log("Problem with inquirer.prompt");
-        console.log(err);
-   });
-});
+        // Call GitHub api for user info
+        const userInfo = await api.getUser(userResponses);
+        console.log("Your GitHub user info: ", userInfo);
+    
+        // Pass Inquirer userResponses and GitHub userInfo to generateMarkdown
+        console.log("Generating your README next...")
+        const markdown = generateMarkdown(userResponses, userInfo);
+        console.log(markdown);
+    
+        // Write markdown to file
+        await writeFileAsync('ExampleREADME.md', markdown);
+
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+init();
