@@ -1,10 +1,10 @@
 <br />
 
-# 
+# test
     
 <br />
 
-![Badge for GitHub repo top language](https://img.shields.io/github/languages/top/davidyi0529/?style=flat&logo=appveyor) ![Badge for GitHub last commit](https://img.shields.io/github/last-commit/davidyi0529/?style=flat&logo=appveyor)
+![Badge for GitHub repo top language](https://img.shields.io/github/languages/top/test/test?style=flat&logo=appveyor) ![Badge for GitHub last commit](https://img.shields.io/github/last-commit/test/test?style=flat&logo=appveyor)
 
 <br /> 
 
@@ -13,17 +13,17 @@ Check out the badges hosted by [shields.io](https://shields.io/).
 <br /> 
 
 ### Link to Deployed Application
-- 
+- test
 
 <br />
 
-
+test
 
 <br />
 
 ### Screenshot/Video of your App:
 
-<img src="" width="1275" height="600">
+<img src="test" width="1275" height="600">
 
 <br />
 <br />
@@ -56,7 +56,7 @@ Check out the badges hosted by [shields.io](https://shields.io/).
 
 <br />
 
-> 
+> test
 
 
 
@@ -74,7 +74,7 @@ Check out the badges hosted by [shields.io](https://shields.io/).
 
 <br />
 
-- 
+- test
 
 
 <br />
@@ -91,7 +91,7 @@ Check out the badges hosted by [shields.io](https://shields.io/).
 
 <br />
 
-- 
+- test
 
 
 <br />
@@ -108,7 +108,7 @@ Check out the badges hosted by [shields.io](https://shields.io/).
 
 <br />
 
-- 
+- test
 
 
 <br />
@@ -138,14 +138,14 @@ Check out the badges hosted by [shields.io](https://shields.io/).
     
 For any questions, please contact me with the information below:
    
-> <a href="" target="_blank">GitHub</a> 
+> <a href="test" target="_blank">GitHub</a> 
 
-> <a href="" target="_blank">Email</a> 
+> <a href="test" target="_blank">Email</a> 
 
-> <a href="" target="_blank">LinkedIn</a>
+> <a href="test" target="_blank">LinkedIn</a>
 
 <br />
 
-This project is GNU GPLv3 licensed.
+This project is MIT License licensed.
 
-Copyright &copy; 2020  All rights reserved.
+Copyright &copy; 2020 test All rights reserved.

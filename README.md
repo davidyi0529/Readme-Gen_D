@@ -23,7 +23,7 @@ Readme-Gen_D is a helpful app to get you started on a README.md template.
 
 ### Screenshot of the Top page:
 
-<img src="https://github.com/davidyi0529/Updated-Portfolio_D/blob/main/assets/images/Top%20page.png?raw=true" width="1275" height="600">
+<img src="https://github.com/davidyi0529/Readme-Gen_D/blob/main/Assets/Application.png?raw=true" width="1275" height="600">
 
 ### Screenshot of the Sidebar on page:
 
